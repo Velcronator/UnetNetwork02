@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
     }
 	
     // Update is called once per frame
-	void Update () {
+	void LateUpdate () {
 	
         float translation = Input.GetAxis("Vertical") * speed;
         float rotation = Input.GetAxis("Horizontal") * rotationSpeed;
