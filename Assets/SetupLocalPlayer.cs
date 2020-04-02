@@ -27,12 +27,12 @@ public class SetupLocalPlayer : NetworkBehaviour
 
     void OnChangeColour(string n)
     {
-        pColour = n;
-        Renderer[] rends = GetComponentsInChildren<Renderer>();
+        pColour = n;    // set colour to variable
+        Renderer[] rends = GetComponentsInChildren<Renderer>(); // Array of renders of children
 
         foreach (Renderer r in rends)
         {
-            if (r.gameObject.name == "BODY")
+            if (r.gameObject.name == "BODY")    // Only the body of the car changes colour
                 r.material.SetColor("_Color", ColorFromHex(pColour));
         }
     }
@@ -91,6 +91,12 @@ public class SetupLocalPlayer : NetworkBehaviour
         return new Color32(r, g, b, a);
     }
 
+    public void OnDestroy()
+    {
+        if (nameLabel != null)
+            Destroy(nameLabel.gameObject);
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -109,12 +115,12 @@ public class SetupLocalPlayer : NetworkBehaviour
         nameLabel.transform.SetParent(canvas.transform);
     }
 
-    void LateUpdate()
+    void Update()
     {
         //determine if the object is inside the camera's viewing volume
         Vector3 screenPoint = Camera.main.WorldToViewportPoint(this.transform.position);
         bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 &&
-                        screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+                   screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
         //if it is on screen draw its label attached to is name position
         if (onScreen)
         {
@@ -124,5 +130,4 @@ public class SetupLocalPlayer : NetworkBehaviour
         else //otherwise draw it WAY off the screen 
             nameLabel.transform.position = new Vector3(-1000, -1000, 0);
     }
-
 }
