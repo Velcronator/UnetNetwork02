@@ -18,6 +18,18 @@ public class SetupLocalPlayer : NetworkBehaviour
     [SyncVar(hook = "OnChangeColour")]
     public string pColour = "#ffffff";
 
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        Invoke("UpdateStates", 1f);
+    }
+
+    void UpdateStates()
+    {
+        OnChangeName(pName);
+        OnChangeColour(pColour);
+    }
+
     void OnChangeName(string n) // send to clients
     {
         pName = n;
@@ -50,13 +62,13 @@ public class SetupLocalPlayer : NetworkBehaviour
     public void CmdChangeColour(string newColour)
     {
         pColour = newColour;
-        /*Renderer[] rends = GetComponentsInChildren<Renderer>( );
+        Renderer[] rends = GetComponentsInChildren<Renderer>( );
 
         foreach( Renderer r in rends )
         {
          	if(r.gameObject.name == "BODY")
             	r.material.SetColor("_Color", ColorFromHex(pColour));
-        }*/
+        }
     }
 
     void OnGUI()
